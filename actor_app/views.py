@@ -17,7 +17,8 @@ def actor_list_page():
 
 @actor.route('/<id>')
 def actor_page(id):
-    return render_template('home/actor.html', id=id)
+    data = ""
+    return render_template('home/actor.html', data=data)
 
 @movie.route('/')
 def movie_page():

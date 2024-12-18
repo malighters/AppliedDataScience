@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 import csv
+import json
 
 def actor_list():
     pd.set_option("display.max_columns", None)
@@ -12,6 +13,10 @@ def actor_list():
 
 
 # Feature 2 actor about
+def actor_info():
+    return None
+
+
 
 # Feature 3 movie all_time
 #

@@ -6,16 +6,73 @@
 {% endblock %}
 
 {% block contents %}
-<div class="container">
-    <h1 style="margin-top:37px;">Actor name</h1>
-    <p class="lead">Actor name.</p>
-</div>
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="display-4">{{ data.name }}</h1>
+            <p class="lead">Birthdate: {{ data.birthdate }} | Birthplace: {{ data.birthplace }}</p>
+            <p class="text-muted">Height: {{ data.height }} | Status: {{ data.status }}</p>
+        </div>
+
+        <!-- Bio Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                Biography
+            </div>
+            <div class="card-body">
+                <p>{{ data.bio }}</p>
+            </div>
+        </div>
+
+        <!-- Known For Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                Known For
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for movie in data.known_for %}
+                    <li class="list-group-item">{{ movie }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Awards Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                Awards and Achievements
+            </div>
+            <div class="card-body">
+                <p><strong>Prestigious Awards:</strong> {{ data.awards.prestigious_awards }}</p>
+                <p><strong>Total Wins:</strong> {{ data.awards.total_wins }}</p>
+                <p><strong>Total Nominations:</strong> {{ data.awards.total_nominations }}</p>
+            </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                Social Links
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    {% for link in data.links %}
+                        <li>
+                            <a href="{{ link }}" target="_blank" class="btn btn-link">{{ link }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
 {% endblock %}
 
 
 <!--
-    2. Actor about
-    4. Actor awards
+    2. Actor about (get-overview,)
+    4. Actor awards (get-awards)
     5. Movie genre
     6. Average rating
     7. Top 5 movies
