@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, request
-from actor_app.models import Actor, Movie, Award
-from actor_app.additional import actor_list
+from flask import Blueprint, render_template
+from actor_app.additional import actor_list, actor_info, awards_info, all_time_movie_list, movie_genres, movie_rating, movie_top
 
 index = Blueprint('index', __name__)
 actor = Blueprint('actor', __name__, url_prefix='/actor')
@@ -18,9 +17,21 @@ def actor_list_page():
 
 @actor.route('/<id>')
 def actor_page(id):
-    data = ""
-    return render_template('home/actor.html', data=data)
+    main_info = actor_info(id)
+    award_info = awards_info(id)
+    genres_info = movie_genres(id)
+    rating_info = movie_rating(id)
+    top_movies = movie_top(id)
+    return render_template(
+        'home/actor.html',
+        main_info=main_info,
+        award_info=award_info,
+        genres_info=genres_info,
+        rating_info=rating_info,
+        top_movies=top_movies
+    )
 
 @movie.route('/')
-def movie_page():
-    return render_template('home/movie.html')
+def movie_list():
+    movies = all_time_movie_list()
+    return render_template('home/movie.html', movies=movies)
