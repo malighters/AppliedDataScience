@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request
+from actor_app.models import Actor, Movie, Award
 from actor_app.additional import actor_list
 
 index = Blueprint('index', __name__)
@@ -12,7 +13,7 @@ def index_page():
 
 @actor.route('/')
 def actor_list_page():
-    actors = actor_list().to_dict(orient = "records")
+    actors = actor_list()
     return render_template('home/list.html', actors=actors)
 
 @actor.route('/<id>')

@@ -2,14 +2,21 @@
 
 import numpy as np
 import pandas as pd
-import csv
-import json
+from actor_app.models import Actor, Movie, Award
+from flask import jsonify
 
 def actor_list():
-    pd.set_option("display.max_columns", None)
-    data = pd.read_csv("actor_app/data/actor_list.csv")
+    actors = Actor.query.all()
 
-    return data[['Const', 'Name', 'BirthDate', 'KnownFor', 'Position']]
+    data = []
+    for count, value in enumerate(actors):
+        data.append({
+            'Position': count + 1,
+            'Name': value.Name,
+            'BirthDate': value.BirthDate,
+            'Const': value.Const
+        })
+    return data
 
 
 # Feature 2 actor about
