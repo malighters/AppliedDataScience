@@ -1,13 +1,34 @@
 {% extends "base.html" %}
 
 {% block metatags %}
-<title>Movie statistics</title>
-<meta name="description" content="Movie statistics">
+<title>100 Timeless Movies With Your Favorite Actors</title>
+<meta name="description" content="100 Timeless Movies With Your Favorite Actors">
 {% endblock %}
 
 {% block contents %}
-<div class="container">
-    <h1 style="margin-top:37px;">Movie statistics</h1>
-    <p class="lead">Movie statistics.</p>
-</div>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">100 Timeless Movies With Your Favorite Actors </h2>
+
+        <div class="row">
+            <div class="col-md-6">
+                <ol>
+                    {% for movie in movies %}
+                        {% if loop.index <= 50 %}
+                            <li>{{ movie.Name }} ({{ movie.Year }}) - ★ {{ movie.Rating }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </div>
+            <div class="col-md-6">
+                <ol start="51">
+                    {% for movie in movies %}
+                        {% if loop.index > 50 %}
+                            <li>{{ movie.Name }} ({{ movie.Year }}) - ★ {{ movie.Rating }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

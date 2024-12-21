@@ -1,17 +1,35 @@
 {% extends "base.html" %}
 
 {% block metatags %}
-<title>Actor name</title>
+<title>{{ main_info.Name }}</title>
 <meta name="description" content="Actor name">
+
+<script>
+    function toggleBio() {
+        var dots = document.getElementById("dots");
+        var moreText = document.getElementById("more");
+        var btnText = document.getElementById("myBtn");
+
+        if (dots.style.display === "none") {
+            dots.style.display = "inline";
+            btnText.innerHTML = "Read more";
+            moreText.style.display = "none";
+        } else {
+            dots.style.display = "none";
+            btnText.innerHTML = "Read less";
+            moreText.style.display = "inline";
+        }
+    }
+</script>
 {% endblock %}
 
 {% block contents %}
     <div class="container mt-4">
         <!-- Header -->
-        <div class="text-center mb-4">
-            <h1 class="display-4">{{ data.name }}</h1>
-            <p class="lead">Birthdate: {{ data.birthdate }} | Birthplace: {{ data.birthplace }}</p>
-            <p class="text-muted">Height: {{ data.height }} | Status: {{ data.status }}</p>
+        <div class="text-center mb-6">
+            <h1 class="display-4">{{ main_info.Name }}</h1>
+            <p class="lead">Birthdate: {{ main_info.BirthDate }} | Birthplace: {{ main_info.BirthLocation }}</p>
+            <p class="text-muted">Height: {{ main_info.Height }} </p>
         </div>
 
         <!-- Bio Section -->
@@ -20,64 +38,103 @@
                 Biography
             </div>
             <div class="card-body">
-                <p>{{ data.bio }}</p>
+                <p>{{ main_info.Bio[:400] }}<span id="dots">
+                    <button onclick="toggleBio()" id="myBtn" style="color:blue; border:none; background: none;">...</button>
+                </span><span id="more" style="display:none;">{{ main_info.Bio[400:] }}</span></p>
             </div>
-        </div>
-
-        <!-- Known For Section -->
-        <div class="card mb-4">
-            <div class="card-header bg-success text-white">
-                Known For
-            </div>
-            <ul class="list-group list-group-flush">
-                {% for movie in data.known_for %}
-                    <li class="list-group-item">{{ movie }}</li>
-                {% endfor %}
-            </ul>
         </div>
 
         <!-- Awards Section -->
         <div class="card mb-4">
             <div class="card-header bg-warning text-dark">
-                Awards and Achievements
+                Awards
             </div>
-            <div class="card-body">
-                <p><strong>Prestigious Awards:</strong> {{ data.awards.prestigious_awards }}</p>
-                <p><strong>Total Wins:</strong> {{ data.awards.total_wins }}</p>
-                <p><strong>Total Nominations:</strong> {{ data.awards.total_nominations }}</p>
+            <div class="container mt-5">
+                <p><strong>Total Wins:</strong> {{ award_info.Number }}</p>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <ol>
+                            {% for award in award_info.Awards %}
+                                {% if loop.index <= award_info.Number / 2 %}
+                                    <li>{{ award.Name }} ({{ award.Year }})</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ol>
+                    </div>
+                    <div class="col-md-6">
+                        <ol start="{{ award_info.Number / 2 + 1 }}">
+                            {% for award in award_info.Awards %}
+                                {% if loop.index > award_info.Number / 2 %}
+                                    <li>{{ award.Name }} ({{ award.Year }})</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Social Links -->
-        <div class="card">
+        <!-- Genres Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                Top 5 Genres
+            </div>
+            <ol class="list-group list-group-flush">
+                {% for genre in genres_info %}
+                    <li class="list-group-item"><strong>{{ genre }}</strong></li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        <!-- Average Rating Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-danger text-white">
+                Average Rating
+            </div>
+            <div class="card-body">
+                <p><strong>Overall Average Rating:</strong> {{ rating_info.Overall }}</p>
+                <ul>
+                    {% for year, rating in rating_info.Yearly.items() %}
+                        <li><strong>{{ year }}:</strong> {{ rating }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Top 5 Movies Section -->
+        <div class="card mb-4">
             <div class="card-header bg-info text-white">
+                Top 5 Movies
+            </div>
+            <div class="card-body">
+                <ol>
+                    {% for movie in top_movies %}
+                        <li>{{ movie.Name }} ({{ movie.Year }}) - {{ movie.Genre }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+
+         <!-- Social Links -->
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
                 Social Links
             </div>
             <div class="card-body">
                 <ul class="list-unstyled">
-                    {% for link in data.links %}
-                        <li>
-                            <a href="{{ link }}" target="_blank" class="btn btn-link">{{ link }}</a>
-                        </li>
-                    {% endfor %}
+                    {% if main_info.OfficialLinks %}
+                        {% for link in main_info.OfficialLinks %}
+                            <li>
+                                <a href="{{ link.Link }}" target="_blank" class="btn btn-link">{{ link.Name }}</a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li>No social links available</li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </div>
 
-
-
 {% endblock %}
-
-
-<!--
-    2. Actor about (get-overview,)
-    4. Actor awards (get-awards)
-    5. Movie genre
-    6. Average rating
-    7. Top 5 movies
-
-
-
- -->
-

@@ -8,12 +8,12 @@
 {% block contents %}
 <div class="container">
     <div class="container mt-5">
-    <h2 class="text-center mb-4">Actor list</h2>
+    <h2 class="text-center mb-4">Top 50 Popular Hollywood Actors and Actresses</h2>
     <!-- Table -->
     <table class="table table-striped table-bordered">
-        <thead class="table-dark">
+        <thead>
             <tr>
-                <th>Id</th>
+                <th>Position</th>
                 <th>Name</th>
                 <th>Birthdate</th>
                 <th>Link</th>
@@ -26,7 +26,7 @@
                 <td>{{ actor.Name }}</td>
                 <td>{{ actor.BirthDate }}</td>
                 <td>
-                    <a href="/actor/{{ actor.Const }}" target="_blank" class="btn btn-primary btn-sm">Visit Page</a>
+                    <a href="/actor/{{ actor.Const }}" class="btn btn-primary btn-sm">Visit Page</a>
                 </td>
             </tr>
             {% endfor %}
