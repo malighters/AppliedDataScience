@@ -1,7 +1,20 @@
 from flask import Flask
-from actor_app.views import index, actor, movie
+from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
-app.register_blueprint(index)
-app.register_blueprint(actor)
-app.register_blueprint(movie)
+db = SQLAlchemy()
+
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:mypassword@localhost:5432/mydatabase'
+
+    db.init_app(app)
+
+    from actor_app.views import index, actor, movie
+    app.register_blueprint(index)
+    app.register_blueprint(actor)
+    app.register_blueprint(movie)
+
+    with app.app_context():
+        db.create_all()
+
+    return app
