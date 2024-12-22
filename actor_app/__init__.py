@@ -4,6 +4,16 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 def create_app():
+    """
+    Creates and configures the Flask application.
+
+    This function sets up the Flask application, configures the SQLAlchemy database,
+    registers the blueprints for different parts of the application, and initializes
+    the database.
+
+    Returns:
+        Flask: The configured Flask application instance.
+    """
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:mypassword@localhost:5432/mydatabase'
 

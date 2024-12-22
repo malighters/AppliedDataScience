@@ -10,10 +10,10 @@ csv_file_path = "data/award_info.csv"
 df = pd.read_csv(csv_file_path)
 
 # Step 3: Add an ID column to the DataFrame
-df.insert(0, 'id', range(1, 1 + len(df)))
+df.insert(0, 'Id', range(1, 1 + len(df)))
 
 # Step 4: Upload the DataFrame to a new table (it will create the table automatically)
 # Replace 'new_table_name' with your desired table name
-df.to_sql('Award', con=engine, if_exists='fail', index=False)
+df.to_sql('award', con=engine, if_exists='fail', index=False)
 
 print("Table created and data uploaded successfully!")
