@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block metatags %}
+<title>Main page</title>
+<meta name="description" content="Main page">
+{% endblock %}
+
+{% block contents %}
+<div class="container m-4">
+    <h3>Hola Friend! Looks like something went wrong on the server.</h3>
+    <h4>Please try again or try another part of server or go back <a href="{{ url_for('index.index_page')  }}">home</a></h4>
+</div>
+{% endblock %}

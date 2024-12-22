@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block metatags %}
+<title>Main page</title>
+<meta name="description" content="Main page">
+{% endblock %}
+
+{% block contents %}
+<div class="container m-4">
+    <h3>Hola Friend! Looks like in your quest you have reached a location which does not exist yet.</h3>
+    <h4>To continue, either check your map location (URL)  or go back <a href="{{ url_for('index.index_page')  }}">home</a></h4>
+</div>
+{% endblock %}

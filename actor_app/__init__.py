@@ -14,6 +14,9 @@ def create_app():
     app.register_blueprint(actor)
     app.register_blueprint(movie)
 
+    from actor_app.errors import bp as errors_bp
+    app.register_blueprint(errors_bp)
+
     with app.app_context():
         db.create_all()
 
