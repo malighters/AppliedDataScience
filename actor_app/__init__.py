@@ -1,7 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from redis import Redis
 
 db = SQLAlchemy()
+redis = Redis()
 
 def create_app():
     """

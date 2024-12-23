@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 from actor_app.additional import actor_list, actor_info, awards_info, all_time_movie_list, movie_genres, movie_rating, movie_top
-
+from actor_app import redis
+import json
 
 index = Blueprint('index', __name__)
 actor = Blueprint('actor', __name__, url_prefix='/actor')
@@ -38,18 +39,20 @@ def actor_page(id):
     Returns:
         str: The rendered HTML template for the actor detail page with actor information, awards, genres, ratings, and top movies.
     """
-    main_info = actor_info(id)
-    award_info = awards_info(id)
-    genres_info = movie_genres(id)
-    rating_info = movie_rating(id)
-    top_movies = movie_top(id)
+    actor_cache = redis.get(id)
+    if actor_cache is None:
+        info = [actor_info(id), awards_info(id), movie_genres(id), movie_rating(id), movie_top(id)]
+        redis.set(id, json.dumps(info))
+    else:
+        info = json.loads(actor_cache.decode('utf-8'))
+
     return render_template(
         'home/actor.html',
-        main_info=main_info,
-        award_info=award_info,
-        genres_info=genres_info,
-        rating_info=rating_info,
-        top_movies=top_movies
+        main_info=info[0],
+        award_info=info[1],
+        genres_info=info[2],
+        rating_info=info[3],
+        top_movies=info[4]
     )
 
 @movie.route('/')
