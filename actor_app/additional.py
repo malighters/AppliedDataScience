@@ -9,17 +9,17 @@ def actor_list():
     Returns:
         list: A list of dictionaries, each containing the position, name, birthdate, and const of an actor.
     """
-    actors = Actor.query.all()
+    actors_query = Actor.query.all()
 
-    data = []
-    for count, value in enumerate(actors):
-        data.append({
+    actors = []
+    for count, value in enumerate(actors_query):
+        actors.append({
             'Position': count + 1,
             'Name': value.Name,
             'BirthDate': value.BirthDate,
             'Const': value.Const
         })
-    return data
+    return actors
 
 
 # Feature 2 About the actor/actresses
@@ -44,16 +44,7 @@ def actor_info(const):
                 'Link': url
             })
 
-    data = {
-        'Const': actor.Const,
-        'Name': actor.Name,
-        'BirthDate': actor.BirthDate,
-        'BirthLocation': actor.BirthLocation,
-        'Height': actor.Height,
-        'Bio': actor.Bio,
-        'OfficialLinks': links,
-    }
-    return data
+    return { 'Const': actor.Const, 'Name': actor.Name, 'BirthDate': actor.BirthDate, 'BirthLocation': actor.BirthLocation, 'Height': actor.Height, 'Bio': actor.Bio, 'OfficialLinks': links }
 
 
 # Feature 3 All time movie names and years
@@ -85,18 +76,14 @@ def awards_info(const):
         dict: A dictionary containing the number of awards and a list of awards with their position, name, and year.
     """
     awards = Award.query.filter_by(Const=const).all()
-    awards_filtered = []
-    for count, value in enumerate(awards):
-        awards_filtered.append({
-            'Position': value.Id,
-            'Name': value.Name,
-            'Year': value.Year
-        })
-    data = {
-        "Number": len(awards_filtered),
-        "Awards": awards_filtered
-    }
-    return data
+    awards_filtered = {}
+    for value in awards:
+        if awards_filtered.get(value.Year) is None:
+            awards_filtered[value.Year] = value.Name
+        else:
+            awards_filtered[value.Year] = awards_filtered[value.Year]+ ", " + value.Name
+
+    return { "Number": len(awards), "Awards": sorted(awards_filtered.items()) }
 
 # Feature 5 Movie genre of actor/actresses
 def movie_genres(const):

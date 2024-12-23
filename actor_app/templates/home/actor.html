@@ -49,29 +49,12 @@
             <div class="card-header bg-warning text-dark">
                 Awards
             </div>
-            <div class="container mt-5">
+            <div class="container mt-4">
                 <p><strong>Total Wins:</strong> {{ award_info.Number }}</p>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <ol>
-                            {% for award in award_info.Awards %}
-                                {% if loop.index <= award_info.Number / 2 %}
-                                    <li>{{ award.Name }} ({{ award.Year }})</li>
-                                {% endif %}
-                            {% endfor %}
-                        </ol>
-                    </div>
-                    <div class="col-md-6">
-                        <ol start="{{ award_info.Number / 2 + 1 }}">
-                            {% for award in award_info.Awards %}
-                                {% if loop.index > award_info.Number / 2 %}
-                                    <li>{{ award.Name }} ({{ award.Year }})</li>
-                                {% endif %}
-                            {% endfor %}
-                        </ol>
-                    </div>
-                </div>
+                 {% for year, awards in award_info.Awards %}
+                    <li><strong>{{ year }}:</strong> {{ awards }} </li>
+                 {% endfor %}
             </div>
         </div>
 
@@ -80,11 +63,13 @@
             <div class="card-header bg-success text-white">
                 Top 5 Genres
             </div>
-            <ol class="list-group list-group-flush">
-                {% for genre in genres_info %}
-                    <li class="list-group-item"><strong>{{ genre }}</strong></li>
-                {% endfor %}
-            </ol>
+            <div class="card-body">
+                <ul>
+                    {% for genre in genres_info %}
+                        <li class=""><strong>{{ genre }}</strong></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
 
         <!-- Average Rating Section -->
@@ -92,13 +77,27 @@
             <div class="card-header bg-danger text-white">
                 Average Rating
             </div>
-            <div class="card-body">
-                <p><strong>Overall Average Rating:</strong> {{ rating_info.Overall }}</p>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-6">
                 <ul>
                     {% for year, rating in rating_info.Yearly.items() %}
+                                {% if loop.index <= (rating_info.Yearly|length // 2 + 1) %}
                         <li><strong>{{ year }}:</strong> {{ rating }}</li>
+                                {% endif %}
                     {% endfor %}
                 </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            {% for year, rating in rating_info.Yearly.items() %}
+                                {% if loop.index > (rating_info.Yearly|length // 2 + 1) %}
+                                    <li><strong>{{ year }}:</strong> {{ rating }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
