@@ -13,6 +13,8 @@ class Actor(db.Model):
         Bio (str): The biography of the actor.
         OfficialLinks (str): The official links related to the actor.
     """
+    __tablename__ = 'actors'
+
     Const = db.Column(db.String(255), primary_key=True)
     Name = db.Column(db.String(255))
     BirthDate = db.Column(db.String(255))
@@ -20,6 +22,9 @@ class Actor(db.Model):
     Height = db.Column(db.String(255))
     Bio = db.Column(db.Text)
     OfficialLinks = db.Column(db.Text)
+
+    movies = db.relationship('Movie', backref='actor', lazy=True)
+    awards = db.relationship('Award', backref='actor', lazy=True)
 
     def __init__(self, Const, Name, BirthDate, BirthLocation, Height, Bio, OfficialLinks):
         self.Const = Const
@@ -45,8 +50,10 @@ class Movie(db.Model):
         Rating (float): The rating of the movie.
         Genre (str): The genre of the movie.
     """
+    __tablename__ = 'movies'
+
     Tconst = db.Column(db.String(255), primary_key=True)
-    Const = db.Column(db.String(255))
+    Const = db.Column(db.String(255), db.ForeignKey('actors.Const'))
     Name = db.Column(db.String(255))
     Year = db.Column(db.Integer)
     Rating = db.Column(db.Float)
@@ -73,8 +80,10 @@ class Award(db.Model):
         Name (str): The name of the award.
         Year (int): The year the award was received.
     """
+    __tablename__ = 'awards'
+
     Id = db.Column(db.Integer, primary_key=True)
-    Const = db.Column(db.String(255))
+    Const = db.Column(db.String(255), db.ForeignKey('actors.Const'))
     Name = db.Column(db.String(255))
     Year = db.Column(db.Integer)
 
