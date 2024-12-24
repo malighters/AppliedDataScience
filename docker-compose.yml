@@ -1,0 +1,38 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - '5000:5000'
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db/postgres
+    volumes:
+      - .:/app
+  db:
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./actor_app/data/data.sql:/docker-entrypoint-initdb.d/data.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres && echo 'Postgres is ready' && psql -U postgres -d postgres -c 'SELECT COUNT(*) FROM awards;' || echo 'Error in query'"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  redis:
+      image: redis
+      ports:
+        - '6379:6379'
+      volumes:
+        - cache:/data
+volumes:
+  postgres_data:
+  cache:

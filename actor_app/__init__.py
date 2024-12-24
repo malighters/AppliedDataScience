@@ -1,9 +1,11 @@
+import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from redis import Redis
 
 db = SQLAlchemy()
-redis = Redis()
+redis = Redis(host='redis', port=6379, db=0)
 
 def create_app():
     """
@@ -17,7 +19,7 @@ def create_app():
         Flask: The configured Flask application instance.
     """
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:mypassword@localhost:5432/mydatabase'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL") or 'postgresql://postgres:password@db/postgres'
 
     db.init_app(app)
 
