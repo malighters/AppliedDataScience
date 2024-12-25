@@ -19,7 +19,7 @@ def create_app():
         Flask: The configured Flask application instance.
     """
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL") or 'postgresql://postgres:password@db/postgres'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL") or 'postgresql://localhost:password@db/postgres'
 
     db.init_app(app)
 
